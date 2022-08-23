@@ -19,31 +19,37 @@ resource "google_compute_instance" "default" {
   tags = ["static-files", "webserver"]
 
   shielded_instance_config {
-    enable_secure_boot = true
-    enable_vtpm = true
+    enable_secure_boot          = true
+    enable_vtpm                 = true
     enable_integrity_monitoring = true
   }
 
   scheduling {
-    provisioning_model = "standard"
+    provisioning_model  = "standard"
     on_host_maintenance = "TERMINATE"
-    automatic_restart = true
+    automatic_restart   = true
   }
 
   boot_disk {
     initialize_params {
       image = "ubuntu-minimal-2204-lts-arm64"
-      type = "pd-balanced"
+      type  = "pd-balanced"
     }
   }
 
+  metadata_startup_script = file("./startup.sh")
+
   network_interface {
-    network = "default"
+    subnetwork = "default"
+
+    access_config {
+      network_tier = "PREMIUM"
+    }
   }
 
   metadata = {
     terraform = "true"
-    purpose = "host static files for website"
+    purpose   = "host static files for website"
   }
 
   service_account {
