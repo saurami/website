@@ -4,36 +4,19 @@ My personal website is hosted on Google Cloud Platform.
 
 Resources are managed using [Terraform][1]
 
-## Admin Console
+## GCP
 
-+ In "APIs and Services" enable:
++ Enabled APIs and Services:
 
-  + Computer Engine API
-  + Identity and Access Management (IAM) API
+  1. Computer Engine API
 
-+ In the "IAM and Admin" section:
+  2. Identity and Access Management (IAM) API
 
-  + Change project name (from "Settings")
-  + Create a service account with key. **NOTE:** JSON key will be automatically downloaded
-  + Add the following roles to the service account (from "IAM"):
++ Custom service account (with JSON key) having restricted roles for IaC automation:
 
-  	1. Compute Admin
-  	2. Service Account User
+  1. Compute Admin
 
-## CLI
-
-+ [Install the GCloud CLI][2]
-
-+ Initiate the CLI with cloud SDK
-
-  `gcloud init`
-
-+ Move the downloaded JSON key to `~/.config/gcloud/`
-
-+ Set environment variable for shell
-
-  `export GOOGLE_APPLICATION_CREDENTIALS=~/.config/gcloud/service-account.json`
+  2. Service Account User
 
 
 [1]: https://www.terraform.io/
-[2]: https://cloud.google.com/sdk/docs/install
