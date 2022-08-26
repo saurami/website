@@ -45,7 +45,7 @@ resource "google_compute_instance" "webserver-instance" {
   }
 
   metadata = {
-    ssh-keys               = "${var.ssh_user}:${tls_private_key.webserver_access.public_key_openssh}"
+    ssh-keys               = "${var.ssh_user}:${local_file.public_key.content}"
     block-project-ssh-keys = true
   }
 
@@ -60,5 +60,4 @@ resource "google_compute_instance" "webserver-instance" {
     scopes = ["compute-rw"]
   }
 
-  depends_on = [tls_private_key.webserver_access]
 }
