@@ -14,3 +14,9 @@ output "instance_connection_string" {
   value       = "ssh -i ${local_sensitive_file.private_key.filename} ${var.ssh_user}@${google_compute_instance.website_server.network_interface.0.access_config.0.nat_ip} ${var.host_check} ${var.ignore_known_hosts}"
   sensitive   = false
 }
+
+output "instance_url" {
+  description = "URL of instance with default webpage (of Apache web server)"
+  value = "http://${google_compute_instance.website_server.network_interface.0.access_config.0.nat_ip}"
+  sensitive = false
+}
