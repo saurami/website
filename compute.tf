@@ -5,7 +5,7 @@ resource "google_compute_instance" "website_server" {
   allow_stopping_for_update = true
   deletion_protection       = false
 
-  tags = ["webserver-instance"]
+  tags = ["webserver-instance", "http-server"]
 
   shielded_instance_config {
     enable_secure_boot          = true
