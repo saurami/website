@@ -20,8 +20,11 @@ resource "google_compute_instance" "website_server" {
   }
 
   boot_disk {
+    mode        = "READ_WRITE"
+    auto_delete = true
     initialize_params {
       image = "ubuntu-minimal-2204-jammy-v20220816"
+      type  = "pd-balanced"
     }
   }
 
