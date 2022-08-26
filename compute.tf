@@ -1,15 +1,4 @@
-provider "google" {
-  project = var.project_id
-  region  = "us-west1"
-  zone    = "us-west1-a"
-}
-
-data "google_service_account" "myaccount" {
-  account_id = var.account_id
-  project    = var.project_id
-}
-
-resource "google_compute_instance" "webserver-instance" {
+resource "google_compute_instance" "website_server" {
   name                      = "webserver"
   description               = "Web Server for Personal Website"
   machine_type              = "f1-micro"
@@ -41,7 +30,9 @@ resource "google_compute_instance" "webserver-instance" {
   network_interface {
     network = "default"
 
-    access_config {}
+    access_config {
+      network_tier = "PREMIUM"
+    }
   }
 
   metadata = {

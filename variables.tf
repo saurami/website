@@ -29,6 +29,13 @@ variable "ssh_user" {
 variable "host_check" {
   type        = string
   description = "Dont add private key to known_hosts"
-  default     = "-o 'StrictHostKeyChecking no'"
+  default     = "-o StrictHostKeyChecking=no"
+  sensitive   = false
+}
+
+variable "ignore_known_hosts" {
+  type        = string
+  description = "Ignore (many) keys stored in the ssh-agent; use explicitly declared keys"
+  default     = "-o IdentitiesOnly=yes"
   sensitive   = false
 }
