@@ -1,6 +1,7 @@
 provider "google" {
   project = var.project_id
   region  = "us-west1"
+  zone    = "us-west1-a"
 }
 
 data "google_service_account" "myaccount" {
@@ -8,15 +9,14 @@ data "google_service_account" "myaccount" {
   project    = var.project_id
 }
 
-resource "google_compute_instance" "default" {
+resource "google_compute_instance" "webserver-instance" {
   name                      = "webserver"
   description               = "Web Server for Personal Website"
   machine_type              = "f1-micro"
-  zone                      = "us-west1-b"
   allow_stopping_for_update = true
   deletion_protection       = false
 
-  tags = ["static-files", "webserver"]
+  tags = ["webserver-instance"]
 
   shielded_instance_config {
     enable_secure_boot          = true
@@ -25,31 +25,33 @@ resource "google_compute_instance" "default" {
   }
 
   scheduling {
-    provisioning_model  = "standard"
+    provisioning_model  = "STANDARD"
     on_host_maintenance = "TERMINATE"
     automatic_restart   = true
   }
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-minimal-2204-lts-arm64"
-      type  = "pd-balanced"
+      image = "ubuntu-minimal-2204-jammy-v20220816"
     }
   }
 
   metadata_startup_script = file("./startup.sh")
 
   network_interface {
-    subnetwork = "default"
+    network = "default"
 
-    access_config {
-      network_tier = "PREMIUM"
-    }
+    access_config {}
   }
 
   metadata = {
+    ssh-keys               = "${var.ssh_user}:${tls_private_key.webserver_access.public_key_openssh}"
+    block-project-ssh-keys = true
+  }
+
+  labels = {
     terraform = "true"
-    purpose   = "host static files for website"
+    purpose   = "host-static-files"
   }
 
   service_account {
@@ -57,4 +59,6 @@ resource "google_compute_instance" "default" {
     email  = data.google_service_account.myaccount.email
     scopes = ["compute-rw"]
   }
+
+  depends_on = [tls_private_key.webserver_access]
 }
