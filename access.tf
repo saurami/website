@@ -13,21 +13,34 @@ resource "google_compute_firewall" "webserver_ssh" {
 
 
 resource "tls_private_key" "webserver_access" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
-
-  provisioner "local-exec" { # Generate "terraform-key-pair.pem" in current directory
-    command = <<-EOT
-      echo "${tls_private_key.webserver_access.private_key_openssh}" > "${var.webserver_private_key}"
-      chmod 400 ./"${var.webserver_private_key}"
-    EOT
-  }
+  algorithm = "ED25519"
 }
 
 
-output "public_key" {
+resource "local_file" "private_key" {
+  # IMPORTANT: Newline is required at end of open ssh privsate key file
+  content         = tls_private_key.webserver_access.private_key_openssh
+  filename        = "server_private_openssh"
+  file_permission = "0400"
+}
+
+resource "local_file" "public_key" {
+  content         = trimspace(tls_private_key.webserver_access.public_key_openssh)
+  filename        = "server_public_openssh"
+  file_permission = "0400"
+}
+
+
+output "public_key_openssh" {
   value       = tls_private_key.webserver_access.public_key_openssh
-  description = "Public key added to instance metadata for SSH access"
+  description = "The public key data in 'Authorized Keys' format."
+  sensitive   = false
+}
+
+
+output "public_key_pem" {
+  value       = tls_private_key.webserver_access.public_key_pem
+  description = "Public key data in PEM (RFC 1421) format."
   sensitive   = false
 }
 
@@ -38,6 +51,6 @@ output "instance_ip" {
 
 output "instance_connection_string" {
   description = "Command to connect to the compute instance"
-  value       = "ssh -i ${var.webserver_private_key} ${var.ssh_user}@${google_compute_instance.webserver-instance.network_interface.0.access_config.0.nat_ip} ${var.host_check}"
-  sensitive   = true
+  value       = "ssh -i ${local_file.private_key.filename} ${var.ssh_user}@${google_compute_instance.webserver-instance.network_interface.0.access_config.0.nat_ip} ${var.host_check}"
+  sensitive   = false
 }
