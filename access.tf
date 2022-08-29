@@ -1,16 +1,21 @@
 resource "google_compute_firewall" "webserver_access" {
-  description = "Allow SSH and HTTP access"
+  description = "Allow SSH, HTTP, and HTTPS access"
   name        = "webserver-firewall"
   network     = "default"
 
   allow {
     protocol = "tcp"
-    ports    = ["22"]
+    ports    = ["22"] # SSH
   }
 
   allow {
     protocol = "tcp"
-    ports    = ["80", "8080"]
+    ports    = ["80", "8080"] # HTTP
+  }
+
+  allow {
+    protocol = "tcp"
+    ports    = ["443", "8443"] # HTTPS
   }
 
   target_tags   = ["webserver-instance", "http-server"]
