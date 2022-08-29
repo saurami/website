@@ -17,6 +17,6 @@ output "instance_connection_string" {
 
 output "instance_url" {
   description = "URL of instance with default webpage (of Apache web server)"
-  value = "http://${google_compute_instance.website_server.network_interface.0.access_config.0.nat_ip}"
-  sensitive = false
+  value       = "http://${google_compute_instance.website_server.network_interface.0.access_config.0.nat_ip}"
+  sensitive   = false
 }
