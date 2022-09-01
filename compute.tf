@@ -43,6 +43,27 @@ resource "google_compute_instance" "website_server" {
     block-project-ssh-keys = true
   }
 
+  # Used by file/remote-exec provisioners
+  # Timeout should be greater than instance (re-)creation
+  connection {
+    host        = google_compute_instance.website_server.network_interface.0.access_config.0.nat_ip
+    type        = "ssh"
+    user        = var.ssh_user
+    timeout     = "300s"
+    private_key = file(local_sensitive_file.private_key.filename)
+  }
+
+  # Copies the file as non-root user using SSH
+  provisioner "file" {
+    source = local_file.landing_page.filename
+    destination = "/home/saurabh/index.html"
+  }
+
+  provisioner "file" {
+    source = local_file.virtual_host.filename
+    destination = "/home/saurabh/saurabh.cc.conf"
+  }
+
   labels = {
     terraform = "true"
     purpose   = "host-static-files"
