@@ -35,4 +35,6 @@ sudo certbot --apache --non-interactive \
 	--email "saurabhm@proton.me" \
 	--agree-tos \
 	--no-eff-email \
-	--domain "saurabh.cc" --domain "www.saurabh.cc"
+	--domain "saurabh.cc" --domain "www.saurabh.cc" \
+	--redirect \
+	--keep-until-expiring
