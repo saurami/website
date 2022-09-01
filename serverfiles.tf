@@ -26,8 +26,8 @@ resource "local_file" "virtual_host" {
   ServerAlias www.saurabh.cc
   ServerAdmin saurabhm@proton.me
   DocumentRoot /var/www/saurabh.cc/public_html
-  ErrorLog $${APACHE_LOG_DIR}/error.log
-  CustomLog $${APACHE_LOG_DIR}/access.log combined
+  ErrorLog /var/www/saurabh.cc/log/error.log
+  CustomLog /var/www/saurabh.cc/log/access.log combined
 </VirtualHost>
 EOT
 
