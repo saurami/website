@@ -25,7 +25,7 @@ resource "local_file" "virtual_host" {
   ServerName saurabh.cc
   ServerAlias www.saurabh.cc
   ServerAdmin saurabhm@proton.me
-  DocumentRoot /var/www/saurabh.cc/playground
+  DocumentRoot /var/www/saurabh.cc/public_html
   ErrorLog $${APACHE_LOG_DIR}/error.log
   CustomLog $${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
