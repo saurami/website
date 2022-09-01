@@ -18,6 +18,7 @@ readlink -f /snap/bin/certbot
 
 sudo mkdir -p /var/www/saurabh.cc/playground
 sudo mkdir -p /var/www/saurabh.cc/public_html
+sudo mkdir -p /var/www/saurabh.cc/log
 
 sudo cp /home/saurabh/index.html /var/www/saurabh.cc/playground/
 sudo cp /home/saurabh/index.html /var/www/saurabh.cc/public_html/
