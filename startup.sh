@@ -1,6 +1,7 @@
 #! /bin/bash
 
 sudo apt update
+sudo apt install vim git -y
 
 sudo snap install core
 sudo snap refresh core
