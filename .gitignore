@@ -6,6 +6,12 @@
 *.tfstate.*
 *.terraform.lock.hcl
 
+# terraform generated files
+index.html
+saurabh.cc.conf
+server_private_openssh
+server_public_openssh
+
 # Other files
 crash.log
 env.txt
