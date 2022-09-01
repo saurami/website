@@ -4,6 +4,7 @@ My personal website is hosted on Google Cloud Platform.
 
 Resources are managed using [Terraform][1]
 
+
 ## GCP
 
 + Enabled APIs and Services:
@@ -27,13 +28,17 @@ Resources are managed using [Terraform][1]
 
 + Initialize Terraform
 
-  `terrafor init -upgrade`
+  `terraform init -upgrade`
+
++ Validate existing configuration
+
+  `terraform validate`
 
 + Create cloud resources
 
   `terraform apply --auto-approve`
 
-+ Add the instance's external IP as an "A" record in Google Domains (domain registrar) for hostnames:
++ Add the instance's external IP (from the console output) as an "A" record in Google Domains (domain registrar) for hostnames:
 
   1. saurabh.cc
   2. www<nowiki/>.saurabh<nowiki/>.cc
